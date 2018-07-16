@@ -7,3 +7,4 @@ Lixie is a display unit using acrylic board like Nixie Tube.
 
 # Using libraries
 [kicad_ArduinoNano](https://github.com/kiwichrish/kicad_ArduinoNano)
+https://forum.kicad.info/t/where-are-the-momentary-bush-button-switches-located/5695
