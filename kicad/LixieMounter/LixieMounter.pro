@@ -1,4 +1,4 @@
-update=2018/07/17 20:55:13
+update=2018/07/17 21:05:14
 version=1
 last_client=kicad
 [pcbnew]
@@ -27,13 +27,13 @@ NetIExt=net
 version=1
 [eeschema]
 version=1
-LibDir=
+LibDir=lib
 [eeschema/libraries]
-LibName1=LixieClock-rescue
-LibName2=switches
-LibName3=lib/LixieClock
-LibName4=power
-LibName5=device
+LibName1=power
+LibName2=device
+LibName3=switches
+LibName4=relays
+LibName5=motors
 LibName6=transistors
 LibName7=conn
 LibName8=linear
@@ -61,3 +61,4 @@ LibName29=opto
 LibName30=atmel
 LibName31=contrib
 LibName32=valves
+LibName33=lib/LixieMounter
