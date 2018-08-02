@@ -1,6 +1,6 @@
 /*
  * @Author     : MaruTama
- * @LastUpdate : 2018/07/26
+ * @LastUpdate : 2018/08/02
  * @Since      : 2018/07/26
  * 
  * @reference
@@ -28,6 +28,7 @@ void setup(void){
   pinMode(ENC_A,INPUT_PULLUP);
   pinMode(ENC_B,INPUT_PULLUP);
   Serial.begin(9600);
+  RTC_init(); // RTC の初期化
 }
 
 
@@ -91,4 +92,5 @@ void loop(void){
     default: 
       break;
   }
+  viewClock();
 }
