@@ -10,55 +10,81 @@
  */
 
 //ピン番号宣言
-int const ENC_A = 16;
-int const ENC_B = 17;
+int const TCT_SW = 15;
+int const ENC_A  = 16;
+int const ENC_B  = 17;
+
 
 //変数の宣言
-byte valenc;
+byte valSw;
+bool isPushedSw = false;
+
+byte valEnc;
 byte val;
 
+// 初期化
 void setup(void){
+  pinMode(TCT_SW, INPUT);
   pinMode(ENC_A,INPUT_PULLUP);
   pinMode(ENC_B,INPUT_PULLUP);
   Serial.begin(9600);
 }
 
+
+// 基本的にボタンとロータリーエンコーダの制御を行う
 void loop(void){
-  valenc = valenc<<2 & B00001100;
-  valenc += (digitalRead(ENC_A)<<1) + (digitalRead(ENC_B));
 
-/*
- * 次のように変化する.
- * L : 0100 <- 1101 <- 1011 <- 0010 <- 0000
- * R : 0000 -> 0001 -> 0111 -> 1110 -> 1000
- * 今回は、1クリック 4パルスのロータリーエンコーダなので
- * L : 0100
- * R : 1000
- * で判定できる
- */
+ /********************************************************
+  * タクトスイッチに関する処理 
+  ********************************************************/
+  // チャタリングを防ぐために状態を byte 型 で状態変化を保持する
+  if(digitalRead(TCT_SW) == 0){
+        valSw = valSw<<1;
+        valSw += digitalRead(TCT_SW);
+        
+  }else{
+    //押されてなければ初期化
+    valSw = 0xff; 
+    isPushedSw = false;
+  }
+  // チャタリングが収まった
+  if(valSw == 0x00 && !isPushedSw){
+    isPushedSw = true;
+    // 処理
+    Serial.println("push!");   
+  }
 
-  switch(valenc){
-    //反時計回り
-//    case B00000010 :
-//    case B00001011 :
-//    case B00001101 :
+  
+ /********************************************************
+  * ロータリーエンコーダに関する処理
+  ********************************************************/
+  valEnc = valEnc<<2 & B00001100;
+  valEnc += (digitalRead(ENC_A)<<1) + (digitalRead(ENC_B));
+  /*
+   * 次のように変化する.
+   * L : 0100 <- 1101 <- 1011 <- 0010 <- 0000
+   * R : 0000 -> 0001 -> 0111 -> 1110 -> 1000
+   * 今回は、1クリック 4パルスのロータリーエンコーダなので
+   * L : 0100
+   * R : 1000
+   * で判定できる
+   */
+  switch(valEnc){
+    // 時計回り
     case B00000100 :
       if(val > 0){
       val--;
       }
-      Serial.print("L ");
+      Serial.print("Clockwise ");
       Serial.println(val);      
       break;
 
-    //時計回り
-//    case B00000001 :
-//    case B00000111 :
-//    case B00001110 :
+    // 反時計回り
     case B00001000 : 
       if(val < 255){
       val++;
       }
-      Serial.print("R ");
+      Serial.print("revarse ");
       Serial.println(val);      
       break;
 
